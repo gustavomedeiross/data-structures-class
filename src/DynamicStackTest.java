@@ -4,28 +4,26 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DynamicStackTest {
-    private Stack<Object> sut;
+    private Stack<String> sut;
 
     @BeforeEach
     void setUp() {
-        sut = new DynamicStack<Object>();
+        sut = new DynamicStack<String>();
     }
 
     @Test
     public void testPushOneItem() {
-        Object o = "x";
-        sut.push(o);
-        assertEquals(o, sut.peek());
+        sut.push("x");
+        assertEquals("x", sut.peek());
         assertEquals(1, sut.size());
         assertFalse(sut.isEmpty());
     }
 
     @Test
     public void testPushAndPopOneItem() {
-        Object o = "x";
-        sut.push(o);
-        Object r = sut.pop();
-        assertEquals(o, r);
+        sut.push("x");
+        Object popped = sut.pop();
+        assertEquals("x", popped);
         assertEquals(0, sut.size());
         assertTrue(sut.isEmpty());
         assertFalse(sut.isNotEmpty());
@@ -33,13 +31,60 @@ class DynamicStackTest {
 
     @Test
     public void testPushTwoItems() {
-        Object x = "x";
-        Object y = "y";
-        sut.push(x);
-        sut.push(y);
-        assertEquals(y, sut.peek());
+        sut.push("x");
+        sut.push("y");
+        assertEquals("y", sut.peek());
         assertFalse(sut.isEmpty());
         assertEquals(2, sut.size());
+    }
+
+    @Test
+    public void testPushTwoItemsAndPopOneItem() {
+        sut.push("x");
+        sut.push("y");
+        assertEquals("y", sut.peek());
+        assertFalse(sut.isEmpty());
+        assertEquals(2, sut.size());
+
+        Object popped = sut.pop();
+        assertEquals("y", popped);
+        assertEquals(1, sut.size());
+        assertEquals("x", sut.peek());
+    }
+
+    @Test
+    public void testPush3ItemsPop2AndPush1() {
+        sut.push("x");
+        sut.push("y");
+        sut.push("z");
+        assertEquals(3, sut.size());
+        assertEquals("z", sut.peek());
+
+        sut.pop();
+        sut.pop();
+        assertEquals(1, sut.size());
+        assertEquals("x", sut.peek());
+
+        sut.push("y");
+        assertEquals(2, sut.size());
+        assertEquals("y", sut.peek());
+    }
+
+    @Test
+    public void testPush5ItemsAndPop3() {
+        sut.push("1");
+        sut.push("2");
+        sut.push("3");
+        sut.push("4");
+        sut.push("5");
+        assertEquals(5, sut.size());
+        assertEquals("5", sut.peek());
+
+        sut.pop();
+        sut.pop();
+        sut.pop();
+        assertEquals(2, sut.size());
+        assertEquals("2", sut.peek());
     }
 
     @Test
