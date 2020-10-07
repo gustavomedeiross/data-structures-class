@@ -1,13 +1,19 @@
-public class LinkedListImpl<T> implements LinkedList<T> {
+public class DoublyLinkedList<T> implements LinkedList<T> {
     private Node<T> head;
+    private Node<T> tail;
 
     @Override
     public void add(T t) {
         Node<T> node = new Node<T>(t);
         if (isEmpty()) {
             head = node;
+            tail = head;
+            node.previous = null;
         } else {
-            last(head).next = node;
+            Node<T> last = last(head);
+            last.next = node;
+            node.previous = last;
+            tail = node;
         }
     }
 
@@ -18,21 +24,34 @@ public class LinkedListImpl<T> implements LinkedList<T> {
         if (index == 0) {
             newNode.next = head;
             head = newNode;
-        } else {
-            Node<T> current = getNodeByIndex(index-1);
-            newNode.next = current.next;
-            current.next = newNode;
+            return;
+        }
+
+        Node<T> current = getNodeByIndex(index-1);
+        newNode.next = current.next;
+        current.next = newNode;
+
+        if (index == size() - 1) {
+            tail = newNode;
         }
     }
 
     @Override
     public void remove(int index) {
         if (index == 0) {
-            head = head.next;
-        } else {
-            Node<T> node = getNodeByIndex(index - 1);
-            node.next = node.next.next;
+            Node<T> right = head.next;
+            head = right;
+            right.previous = head;
+            return;
         }
+
+        Node<T> left = getNodeByIndex(index - 1);
+        Node<T> middle = left.next;
+        Node<T> right = middle.next;
+        left.next = right;
+
+        if (right != null)
+            right.previous = left;
     }
 
     private Node<T> getNodeByIndex(int index) {
@@ -59,7 +78,7 @@ public class LinkedListImpl<T> implements LinkedList<T> {
     }
 
     private Node<T> last(Node<T> node) {
-        return node.next != null ? last(node.next) : node;
+        return tail;
     }
 
     @Override
@@ -105,10 +124,12 @@ public class LinkedListImpl<T> implements LinkedList<T> {
 
     private class Node<U> {
         U value;
+        Node<U> previous;
         Node<U> next;
 
         Node(U value) {
             this.value = value;
+            this.previous = null;
             next = null;
         }
     }

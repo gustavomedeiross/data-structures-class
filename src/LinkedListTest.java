@@ -8,7 +8,7 @@ class LinkedListTest {
 
     @BeforeEach
     protected void setUp() {
-        sut = new LinkedListImpl<>();
+        sut = new DoublyLinkedList<Integer>();
     }
 
     @Test
@@ -50,5 +50,105 @@ class LinkedListTest {
         assertEquals(2, sut.indexOf(10));
         assertEquals(1, sut.indexOf(2));
         assertEquals(-1, sut.indexOf(8));
+    }
+
+    @Test
+    public void testPutInTheMiddle() {
+        sut.add(5);
+        sut.add(3);
+        sut.add(4);
+        sut.add(2);
+        sut.add(7);
+
+        sut.put(10, 2);
+        assertEquals(2, sut.indexOf(10));
+        assertEquals(5, sut.get(0));
+        assertEquals(3, sut.get(1));
+        assertEquals(10, sut.get(2));
+        assertEquals(4, sut.get(3));
+        assertEquals(2, sut.get(4));
+    }
+
+    @Test
+    public void testPutAtTheStart() {
+        sut.add(5);
+        sut.add(3);
+        sut.add(4);
+        sut.add(2);
+        sut.add(7);
+
+        sut.put(10, 0);
+        assertEquals(0, sut.indexOf(10));
+        assertEquals(10, sut.get(0));
+        assertEquals(5, sut.get(1));
+        assertEquals(3, sut.get(2));
+        assertEquals(4, sut.get(3));
+        assertEquals(2, sut.get(4));
+    }
+
+    @Test
+    public void testPutAtTheEnd() {
+        sut.add(5);
+        sut.add(3);
+        sut.add(4);
+        sut.add(2);
+        sut.add(7);
+
+        sut.put(10, 5);
+        assertEquals(5, sut.indexOf(10));
+        assertEquals(5, sut.get(0));
+        assertEquals(3, sut.get(1));
+        assertEquals(4, sut.get(2));
+        assertEquals(2, sut.get(3));
+        assertEquals(7, sut.get(4));
+        assertEquals(10, sut.get(5));
+    }
+
+    @Test
+    public void testRemoveItemOnTheMiddle() {
+        sut.add(5);
+        sut.add(3);
+        sut.add(4);
+        sut.add(7);
+        sut.add(2);
+
+        sut.remove(2);
+        assertEquals(-1, sut.indexOf(4));
+        assertEquals(5, sut.get(0));
+        assertEquals(3, sut.get(1));
+        assertEquals(7, sut.get(2));
+        assertEquals(2, sut.get(3));
+    }
+
+    @Test
+    public void testRemoveFirstItem() {
+        sut.add(5);
+        sut.add(3);
+        sut.add(4);
+        sut.add(7);
+        sut.add(2);
+
+        sut.remove(0);
+        assertEquals(-1, sut.indexOf(5));
+        assertEquals(3, sut.get(0));
+        assertEquals(4, sut.get(1));
+        assertEquals(7, sut.get(2));
+        assertEquals(2, sut.get(3));
+    }
+
+    @Test
+    public void testRemoveLastItem() {
+        sut.add(5);
+        sut.add(3);
+        sut.add(4);
+        sut.add(7);
+        sut.add(2);
+
+        sut.remove(4);
+        assertEquals(-1, sut.indexOf(2));
+        assertEquals(5, sut.get(0));
+        assertEquals(3, sut.get(1));
+        assertEquals(4, sut.get(2));
+        assertEquals(7, sut.get(3));
     }
 }
