@@ -3,12 +3,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// TODO refactor + create more tests
 class LinkedListTest {
     private LinkedList<Integer> sut;
 
     @BeforeEach
     protected void setUp() {
-        sut = new DoublyLinkedList<Integer>();
+        sut = new CircularLinkedList<Integer>();
     }
 
     @Test
@@ -31,6 +32,23 @@ class LinkedListTest {
     }
 
     @Test
+    public void testAddMultipleItemsWithCircularStructure() {
+        sut.add(2);
+        sut.add(3);
+        sut.add(5);
+        sut.add(6);
+        sut.add(2);
+        sut.add(3);
+        sut.add(5);
+        sut.add(6);
+
+        assertEquals(2, sut.first());
+        assertEquals(6, sut.last());
+        assertEquals(8, sut.size());
+        assertFalse(sut.isEmpty());
+    }
+
+    @Test
     public void testGetElement() {
         sut.add(5);
         sut.add(2);
@@ -38,6 +56,14 @@ class LinkedListTest {
         assertEquals(2, sut.get(1));
         assertEquals(5, sut.get(0));
         assertEquals(10, sut.get(2));
+
+        try {
+            sut.get(3);
+            fail("get() with invalid index should have thrown an IndexOutOfBoundsException");
+        } catch(IndexOutOfBoundsException e) {
+            return; // passes
+        }
+        fail();
     }
 
     @Test
